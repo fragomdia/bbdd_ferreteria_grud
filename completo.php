@@ -1,12 +1,9 @@
 <?php 
 require_once "include/gestionBbdd.php";
-<<<<<<< HEAD:completo.php
 if (isset($_POST['borrar'])) {
     $cod = $_POST['codigo'];
     GestionBBDD::eliminarProducto($cod);
 }
-=======
->>>>>>> 3f48e71c105dd6cbddf4febcf69260d4e167be1f:index_insertar.php
 if (isset($_POST['insertar'])) {
     $codigo = $_POST['cod'];
     $seccion = $_POST['seccion'];
