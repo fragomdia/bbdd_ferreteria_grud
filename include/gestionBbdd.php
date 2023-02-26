@@ -16,6 +16,7 @@ class GestionBBDD {
         }    	
     }
 
+    //preparada no funka
     public static function productos($inicio, $longitud) {
         $sql="select * from productos limit $inicio, $longitud";
         //$sql="select * from productos limit :n_inicio, :n_fin;";
