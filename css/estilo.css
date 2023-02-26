@@ -1,0 +1,46 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+}
+header {
+    background-color: lightgray;
+    text-align: center;
+    padding: 1rem;
+}
+.productos {
+    text-align: center;
+    background-color: rgb(248, 196, 100);
+}
+table {
+    width: 100%;
+    padding: 1rem 0;
+}
+.cabecera td {
+    background-color: orange;
+    padding: .5rem 0;
+    font-weight: bold;
+}
+.cabecera td:last-child {
+    background-color: transparent;
+}
+.producto td {
+    border: 2px double lightgrey;
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+}
+button {
+    padding: .25rem .5rem;
+}
+.producto2 td {
+    border: 2px double lightgrey;
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+}
+.producto2 td:last-child {
+    border: none;
+}
+.td {
+    border: none;
+}
