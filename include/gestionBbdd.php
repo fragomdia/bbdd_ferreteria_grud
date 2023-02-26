@@ -16,10 +16,12 @@ class GestionBBDD {
         }    	
     }
 
-    public static function productos() {
-        $sql="select * from productos;";
+    public static function productos($inicio, $longitud) {
+        $sql="select * from productos limit $inicio, $longitud";
+        //$sql="select * from productos limit :n_inicio, :n_fin;";
         $conexion=self::realizarConexion();
 		$resultado=$conexion->query($sql);
+        //$resultado->execute(array(":n_inicio"=>$inicio, ":n_fin"=>$fin));
 	    $arra_productos=array();
         while ($fila=$resultado->fetch()){
             $arra_productos[]= new Producto($fila);
@@ -41,7 +43,6 @@ class GestionBBDD {
     public static function editarProducto($codOld, $seccion, $nombre, $fecha, $pais, $precio) {
         try {
             $sql="update productos set seccion = :n_seccion, nombrearticulo = :n_nombre, fecha = :n_fecha,paisdeorigen = :n_pais, precio = :n_precio where codigoarticulo = :n_codigo";
-            //$sql = "update productos set seccion = '$seccion', nombrearticulo = '$nombre', fecha = '$fecha', paisdeorigen = '$pais', precio = '$precio' where codigoarticulo = '$codOld';";
             $conexion=self::realizarConexion();
 		    $resultado=$conexion->prepare($sql);
             $afectados=$resultado->execute(array(":n_seccion"=>$seccion,":n_nombre"=>$nombre,":n_fecha"=>$fecha,":n_pais"=>$pais,":n_precio"=>$precio,":n_codigo"=>$codOld));
@@ -61,6 +62,20 @@ class GestionBBDD {
             $afectados=$resultado->execute(array(":n_codigo"=>$codigo,":n_seccion"=>$seccion,":n_nombre"=>$nombre,":n_fecha"=>$fecha,":n_pais"=>$pais,":n_precio"=>$precio));
             $resultado->closeCursor();
 		    $conexion=null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public static function registros() {
+        try {
+            $sql="select count(codigoarticulo) from productos;";
+            $conexion=self::realizarConexion();
+            $resultado = $conexion->query($sql);
+            $conteo = intval($resultado->fetchColumn());
+            $resultado->closeCursor();
+		    $conexion=null;
+            return ($conteo);         
         } catch (PDOException $e) {
             echo $e->getMessage();
         }

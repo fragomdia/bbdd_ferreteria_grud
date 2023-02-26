@@ -13,6 +13,19 @@ if (isset($_POST['insertar'])) {
     $precio = $_POST['precio'];
     GestionBBDD::registroProducto($codigo, $seccion, $nombre, $fecha, $pais, $precio);
 }
+$inicio = 0;
+$longitud = 5;
+if (!empty($_GET['pag'])) {
+    $pagina = $_GET['pag'];
+    $total = GestionBBDD::registros();
+    $pags = ceil($total / $longitud);
+    for ($i=1; $i <= $pags; $i++) { 
+        if ($pagina == $i) {
+            $inicio = ($longitud * $i) - $longitud;
+            break;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +35,22 @@ if (isset($_POST['insertar'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/estilo.css">
     <title>Document</title>
+    <style>
+        .cont_pag {
+            height: 3rem;
+            padding-top: .5rem;
+        }
+        .pag {
+            border: 2px solid orange;
+            padding: .5rem;
+            margin-right: .25rem;
+            text-decoration: none;
+            color: black;
+        }
+        .pag:hover {
+            color: black;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -40,7 +69,7 @@ if (isset($_POST['insertar'])) {
             </tr>
             <?php
                 try {
-                    $array_de_productos = GestionBBDD::productos();
+                    $array_de_productos = GestionBBDD::productos($inicio, $longitud);
                     foreach ($array_de_productos as $pro) {
                         echo "<tr class='producto'>
                         <td>".$pro->getCodigoProducto()."</td>
@@ -75,6 +104,15 @@ if (isset($_POST['insertar'])) {
                 </tr>
             </form>
         </table>
+        <div class="cont_pag">
+            <?php
+                $total = GestionBBDD::registros();
+                $pags = ceil($total / 5);
+                for ($i=1; $i <= $pags ; $i++) { 
+                    echo "<a href=completo.php?pag=$i class='pag'>$i</a>";
+                }
+            ?>
+        </div>
     </div>
 </body>
 </html>
