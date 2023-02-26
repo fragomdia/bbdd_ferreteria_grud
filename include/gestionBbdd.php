@@ -16,20 +16,23 @@ class GestionBBDD {
         }    	
     }
 
-    //preparada no funka
     public static function productos($inicio, $longitud) {
-        $sql="select * from productos limit $inicio, $longitud";
-        //$sql="select * from productos limit :n_inicio, :n_fin;";
-        $conexion=self::realizarConexion();
-		$resultado=$conexion->query($sql);
-        //$resultado->execute(array(":n_inicio"=>$inicio, ":n_fin"=>$fin));
-	    $arra_productos=array();
-        while ($fila=$resultado->fetch()){
-            $arra_productos[]= new Producto($fila);
+        try {
+            $sql="select * from productos limit $inicio, $longitud";
+            //$sql="select * from productos limit :n_inicio, :n_longitud;";
+            $conexion=self::realizarConexion();
+		    $resultado=$conexion->query($sql);
+            //$resultado->execute(array(":n_inicio"=>$inicio, ":n_longitud"=>$longitud));
+	        $arra_productos=array();
+            while ($fila=$resultado->fetch()){
+                $arra_productos[]= new Producto($fila);
+            }
+            $resultado->closeCursor();
+		    $conexion=null;
+		    return ($arra_productos);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
         }
-        $resultado->closeCursor();
-		$conexion=null;
-		return ($arra_productos);
     }
 
     public static function eliminarProducto($codigo) {

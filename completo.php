@@ -1,5 +1,9 @@
 <?php 
 require_once "include/gestionBbdd.php";
+$total = GestionBBDD::registros();
+$inicio = 0;
+$longitud = 5;
+$pags = ceil($total / $longitud);
 if (isset($_POST['borrar'])) {
     $cod = $_POST['codigo'];
     GestionBBDD::eliminarProducto($cod);
@@ -13,12 +17,8 @@ if (isset($_POST['insertar'])) {
     $precio = $_POST['precio'];
     GestionBBDD::registroProducto($codigo, $seccion, $nombre, $fecha, $pais, $precio);
 }
-$inicio = 0;
-$longitud = 5;
 if (!empty($_GET['pag'])) {
     $pagina = $_GET['pag'];
-    $total = GestionBBDD::registros();
-    $pags = ceil($total / $longitud);
     for ($i=1; $i <= $pags; $i++) { 
         if ($pagina == $i) {
             $inicio = ($longitud * $i) - $longitud;
@@ -106,8 +106,6 @@ if (!empty($_GET['pag'])) {
         </table>
         <div class="cont_pag">
             <?php
-                $total = GestionBBDD::registros();
-                $pags = ceil($total / 5);
                 for ($i=1; $i <= $pags ; $i++) { 
                     echo "<a href=completo.php?pag=$i class='pag'>$i</a>";
                 }
