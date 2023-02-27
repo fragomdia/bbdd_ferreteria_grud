@@ -54,7 +54,7 @@ if (!empty($_GET['pag'])) {
 </head>
 <body>
     <header>
-        <h1>FERRETERÍA GRUD(Completo)(El Clavo)</h1>
+        <h1>FERRETERÍA(El Clavo)</h1>
     </header>
     <div class="productos">
         <table>
