@@ -18,11 +18,12 @@ class GestionBBDD {
 
     public static function productos($inicio, $longitud) {
         try {
-            $sql="select * from productos limit $inicio, $longitud";
-            //$sql="select * from productos limit :n_inicio, :n_longitud;";
+            $sql="select * from productos limit :n_inicio, :n_longitud;";
             $conexion=self::realizarConexion();
-		    $resultado=$conexion->query($sql);
-            //$resultado->execute(array(":n_inicio"=>$inicio, ":n_longitud"=>$longitud));
+		    $resultado=$conexion->prepare($sql);
+            $resultado->bindParam(':n_inicio', $inicio, PDO::PARAM_INT);
+            $resultado->bindParam(':n_longitud', $longitud, PDO::PARAM_INT);
+            $resultado->execute();
 	        $arra_productos=array();
             while ($fila=$resultado->fetch()){
                 $arra_productos[]= new Producto($fila);
@@ -75,7 +76,8 @@ class GestionBBDD {
         try {
             $sql="select count(codigoarticulo) from productos;";
             $conexion=self::realizarConexion();
-            $resultado = $conexion->query($sql);
+            $resultado = $conexion->prepare($sql);
+            $resultado->execute();
             $conteo = intval($resultado->fetchColumn());
             $resultado->closeCursor();
 		    $conexion=null;
@@ -84,6 +86,24 @@ class GestionBBDD {
             echo $e->getMessage();
         }
     }
+
+    public static function producto($cod) {
+        try {
+            $sql="select * from productos where codigoarticulo = :n_codigo";
+            $conexion=self::realizarConexion();
+            $resultado=$conexion->prepare($sql);
+            $resultado->bindParam(':n_codigo', $cod);
+            $resultado->execute();
+            $fila = $resultado->fetch();
+            $producto = new Producto($fila);
+            $resultado->closeCursor();
+		    $conexion=null;
+            return ($producto);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
 }
 
 ?>
