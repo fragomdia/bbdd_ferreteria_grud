@@ -18,12 +18,14 @@ class GestionBBDD {
 
     public static function productos($inicio, $longitud) {
         try {
+            //$sql="select * from productos limit $inicio, $longitud";
             $sql="select * from productos limit :n_inicio, :n_longitud;";
             $conexion=self::realizarConexion();
 		    $resultado=$conexion->prepare($sql);
             $resultado->bindParam(':n_inicio', $inicio, PDO::PARAM_INT);
             $resultado->bindParam(':n_longitud', $longitud, PDO::PARAM_INT);
             $resultado->execute();
+            //$resultado->execute(array(":n_inicio"=>$inicio, ":n_longitud"=>$longitud));
 	        $arra_productos=array();
             while ($fila=$resultado->fetch()){
                 $arra_productos[]= new Producto($fila);
